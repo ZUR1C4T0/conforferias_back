@@ -24,7 +24,7 @@ async function main() {
   })
 
   // --- Crear perfiles de contactos ---
-  await prisma.profile.createMany({
+  await prisma.contactProfile.createMany({
     data: [
       { name: 'Constructores' },
       { name: 'Comercializadores / Distribuidores' },
