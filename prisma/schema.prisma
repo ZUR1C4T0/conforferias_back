@@ -1,0 +1,306 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  password   String
+  name       String
+  role       UserRole @default(REPRESENTANTE)
+  positionId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  position Position @relation(fields: [positionId], references: [id])
+
+  fairRepresentations FairRepresentative[]
+  sessions            Session[]
+}
+
+enum UserRole {
+  ADMIN // Administrador
+  MERCADEO // Mercadeo
+  REPRESENTANTE // Representantes
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  token        String   @unique
+  refreshToken String   @unique
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Position {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
+}
+
+model Fair {
+  id              String   @id @default(uuid())
+  name            String
+  startDate       DateTime
+  endDate         DateTime
+  country         String
+  city            String
+  logoUrl         String
+  standNumber     String
+  areaM2          Float
+  totalInvestment Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  representatives  FairRepresentative[]
+  contacts         Contact[]
+  activities       ParallelActivity[]
+  evidences        FairEvidence[]
+  competitors      FairCompetitor[]
+  trends           Trend[]
+  dafo             DafoAnalysis[]
+  postFairActions  PostFairAction[]
+  evaluation       FairEvaluation[]
+  fairAchievement  FairAchievement[]
+  improvementAreas ImprovementArea[]
+  recommendations  FairRecommendation[]
+}
+
+model FairRepresentative {
+  id       String @id @default(uuid())
+  fairId   String
+  userId   String
+  fullName String
+
+  fair Fair @relation(fields: [fairId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  contacts         Contact[]
+  activities       ParallelActivity[]
+  postFairActions  PostFairAction[]
+  evidences        FairEvidence[]
+  dafo             DafoAnalysis[]
+  competitors      FairCompetitor[]
+  evaluations      FairEvaluation[]
+  achievements     FairAchievement[]
+  improvementAreas ImprovementArea[]
+  recommendations  FairRecommendation[]
+
+  @@unique([fairId, userId])
+}
+
+model Contact {
+  id                 String    @id @default(uuid())
+  fairId             String
+  name               String
+  email              String
+  phone              String
+  profileId          String
+  otherProfile       String?
+  company            String?
+  companyNit         String?
+  country            String
+  city               String?
+  interestProducts   String?
+  estimatedPotential Potential
+  createdById        String
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  fair      Fair               @relation(fields: [fairId], references: [id])
+  profile   ContactProfile     @relation(fields: [profileId], references: [id])
+  createdBy FairRepresentative @relation(fields: [createdById], references: [id])
+
+  tracking ContactTrackingNote[]
+}
+
+enum Potential {
+  BAJO
+  MEDIO
+  ALTO
+}
+
+model ContactProfile {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+
+  contacts Contact[]
+}
+
+model ContactTrackingNote {
+  id        String   @id @default(uuid())
+  contactId String
+  note      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contact Contact @relation(fields: [contactId], references: [id])
+}
+
+model ParallelActivity {
+  id               String       @id @default(uuid())
+  fairId           String
+  representativeId String
+  type             ActivityType
+  description      String
+  attendees        Int?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+}
+
+enum ActivityType {
+  CHARLA_TECNICA
+  RUEDA_DE_NEGOCIOS
+  OTRO
+}
+
+model FairEvidence {
+  id               String  @id @default(uuid())
+  fairId           String
+  representativeId String
+  url              String
+  description      String?
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+}
+
+model DafoAnalysis {
+  id               String   @id @default(uuid())
+  fairId           String
+  representativeId String
+  type             DafoType
+  description      String
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+}
+
+enum DafoType {
+  DEBILIDAD
+  AMENAZA
+  FORTALEZA
+  OPORTUNIDAD
+}
+
+model FairCompetitor {
+  id               String   @id @default(uuid())
+  fairId           String
+  representativeId String
+  company          String
+  country          String
+  city             String?
+  featuredProducts String
+  strengths        String
+  weaknesses       String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+}
+
+model Trend {
+  id        String   @id @default(uuid())
+  fairId    String
+  title     String
+  details   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fair Fair @relation(fields: [fairId], references: [id])
+}
+
+model PostFairAction {
+  id            String       @id @default(uuid())
+  fairId        String
+  action        String
+  responsibleId String
+  limitDate     DateTime
+  status        ActionStatus @default(PENDIENTE)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  fair        Fair               @relation(fields: [fairId], references: [id])
+  responsible FairRepresentative @relation(fields: [responsibleId], references: [id])
+}
+
+enum ActionStatus {
+  PENDIENTE
+  EN_PROGRESO
+  COMPLETADA
+  CANCELADA
+}
+
+model FairEvaluation {
+  id               String   @id @default(uuid())
+  fairId           String
+  representativeId String
+  score            Int
+  explanation      String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+
+  @@unique([fairId, representativeId])
+}
+
+model FairAchievement {
+  id               String   @id @default(uuid())
+  fairId           String
+  representativeId String
+  content          String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+}
+
+model ImprovementArea {
+  id               String   @id @default(uuid())
+  fairId           String
+  representativeId String
+  content          String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+}
+
+model FairRecommendation {
+  id               String   @id @default(uuid())
+  fairId           String
+  representativeId String
+  content          String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+}
