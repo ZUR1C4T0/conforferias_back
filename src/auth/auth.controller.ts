@@ -6,12 +6,10 @@ import {
   HttpStatus,
   Post,
   Req,
-  Res,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import type { Request, Response } from 'express'
+import type { Request } from 'express'
 import { AuthService } from './auth.service'
 import { Public } from './decorators/public.decorator'
 import { RefreshTokenDto } from './dtos/refresh-token.dto'
