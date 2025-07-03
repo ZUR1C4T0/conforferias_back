@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
@@ -7,8 +7,10 @@ async function main() {
   console.log('🚀 Iniciando seed...')
 
   // --- Cargo par el administrador ---
-  const position = await prisma.position.create({
-    data: { name: 'Programador Web' },
+  const position = await prisma.position.upsert({
+    where: { name: 'Programador Web' },
+    create: { name: 'Programador Web' },
+    update: { name: 'Programador Web' },
     select: { id: true },
   })
 
