@@ -38,7 +38,7 @@ enum UserRole {
 model Session {
   id           String   @id @default(uuid())
   userId       String
-  token        String   @unique
+  token        String   @unique @db.VarChar(255)
   refreshToken String   @unique
   createdAt    DateTime @default(now())
   expiresAt    DateTime
