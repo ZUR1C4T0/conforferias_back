@@ -18,9 +18,11 @@ export class CreateFairDto
   @IsNotEmpty()
   name: string
 
+  @Transform(({ value }) => new Date(value), { toClassOnly: true })
   @IsDate()
   startDate: Date
 
+  @Transform(({ value }) => new Date(value), { toClassOnly: true })
   @IsDate()
   @Validate(EndDateValidator)
   endDate: Date
@@ -29,8 +31,8 @@ export class CreateFairDto
   @IsNotEmpty()
   country: string
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   city: string
 
   @IsString()

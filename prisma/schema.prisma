@@ -62,7 +62,7 @@ model Fair {
   startDate       DateTime
   endDate         DateTime
   country         String
-  city            String
+  city            String?
   logoUrl         String
   standNumber     String
   areaM2          Float
