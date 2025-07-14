@@ -4,7 +4,7 @@ import { Roles } from '../auth/decorators/roles.decorator'
 import { AssignRepresentativesDto } from './dto/assign-representatives.dto'
 import { RepresentativesService } from './representatives.service'
 
-@Controller(':fairId/representatives')
+@Controller('fairs/:fairId/representatives')
 export class RepresentativesController {
   constructor(
     private readonly representativesService: RepresentativesService,
