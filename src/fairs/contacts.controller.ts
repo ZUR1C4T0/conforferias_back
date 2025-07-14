@@ -45,6 +45,11 @@ export class ContactsController {
     return this.contactsService.findOne(id, user.id)
   }
 
+  @Get('contact-profiles')
+  findContactProfiles() {
+    return this.contactsService.findContactProfiles()
+  }
+
   @Patch('contacts/:id')
   @Roles(UserRole.REPRESENTANTE)
   update(

@@ -122,6 +122,12 @@ export class ContactsService {
     return contact
   }
 
+  async findContactProfiles() {
+    return await this.prisma.contactProfile.findMany({
+      select: { id: true, name: true, description: true },
+    })
+  }
+
   async update(contactId: string, userId: string, dto: UpdateContactDto) {
     const rep = await this.prisma.fairRepresentative.findFirst({
       where: { userId },
