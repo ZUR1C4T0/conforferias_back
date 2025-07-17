@@ -44,7 +44,6 @@ export class CompetitorsService {
   async findOne(id: string) {
     return await this.prisma.fairCompetitor.findUnique({
       where: { id },
-      select: { fairId: true },
     })
   }
 

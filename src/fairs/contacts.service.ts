@@ -112,7 +112,7 @@ export class ContactsService {
       where: { id: contactId },
       include: {
         profile: true,
-        tracking: { orderBy: { createdAt: 'asc' } },
+        tracking: { orderBy: { createdAt: 'desc' } },
       },
     })
     if (!contact) throw new NotFoundException()
