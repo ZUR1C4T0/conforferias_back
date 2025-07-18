@@ -1,4 +1,5 @@
 import { ActionStatus, PostFairAction } from '@prisma/client'
+import { Transform } from 'class-transformer'
 import {
   IsDate,
   IsEnum,
@@ -14,6 +15,7 @@ export class CreatePostFairActionDto
   @IsNotEmpty()
   action: string
 
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   limitDate: Date
 
