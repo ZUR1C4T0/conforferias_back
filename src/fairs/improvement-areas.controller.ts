@@ -5,7 +5,7 @@ import { Roles } from '../auth/decorators/roles.decorator'
 import { CreateImprovementAreaDto } from './dto/create-improvement-area.dto'
 import { ImprovementAreasService } from './improvement-areas.service'
 
-@Controller('improvement-areas')
+@Controller('')
 export class ImprovementAreasController {
   constructor(
     private readonly improvementAreasService: ImprovementAreasService,
