@@ -2,6 +2,7 @@
   "name": "conforferias_back",
   "scripts": {
     "build": "nest build",
+    "postinstall": "prisma generate",
     "format": "biome format --write src/",
     "start": "nest start",
     "dev": "nest start --watch",
