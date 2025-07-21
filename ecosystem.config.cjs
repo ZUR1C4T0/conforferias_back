@@ -2,7 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'conforferias_back',
-      script: './dist/main.js',
+      script: 'pnpm',
+      args: 'run start',
       env_production: {
         NODE_ENV: 'production',
       },

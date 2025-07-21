@@ -42,4 +42,4 @@ jobs:
           echo R2_PUBLIC_URL=${{ secrets.R2_PUBLIC_URL }} >> .env
 
       - name: Start
-        run: pm2 restart conforferias_back
+        run: pm2 restart ecosystem.config.cjs
