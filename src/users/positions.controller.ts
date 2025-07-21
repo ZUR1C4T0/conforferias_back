@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common'
 import { UserRole } from '@prisma/client'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { CreatePositionDto } from './dtos/create-position.dto'
@@ -27,7 +35,7 @@ export class PositionsController {
     return this.positionsService.findOne(id)
   }
 
-  @Put(':id')
+  @Patch(':id')
   @Roles(UserRole.ADMIN)
   update(
     @Param('id') id: string,

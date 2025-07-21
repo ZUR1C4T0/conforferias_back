@@ -11,7 +11,6 @@ import {
   Post,
   Put,
   Req,
-  UnauthorizedException,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common'
