@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🚀 Iniciando seed...')
 
-  // --- Cargo par el administrador ---
+  // --- Cargo para el administrador ---
   const position = await prisma.position.upsert({
     where: { name: 'Programador Web' },
     create: { name: 'Programador Web' },
