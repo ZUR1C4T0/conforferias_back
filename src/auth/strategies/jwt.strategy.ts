@@ -35,7 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return {
       id: session.userId,
       role: session.user.role,
-      token
+      token,
     }
   }
 }
