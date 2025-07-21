@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'conforferias_back',
       script: 'pnpm',
-      args: 'run start',
+      args: 'run prod',
       env_production: {
         NODE_ENV: 'production',
       },
