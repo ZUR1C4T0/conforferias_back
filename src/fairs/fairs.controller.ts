@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Delete,
   FileTypeValidator,
   Get,
   MaxFileSizeValidator,
@@ -58,15 +57,13 @@ export class FairsController {
 
   @Get()
   findAll(@Req() req: Request) {
-    const user = req.user
-    if (!user) throw new UnauthorizedException()
+    const user = req.user!
     return this.fairsService.findAll(user)
   }
 
   @Get(':id')
   findOne(@Param('id') id: string, @Req() req: Request) {
-    const user = req.user
-    if (!user) throw new UnauthorizedException()
+    const user = req.user!
     return this.fairsService.findOne(id, user)
   }
 
