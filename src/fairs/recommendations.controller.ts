@@ -6,7 +6,7 @@ import { CreateRecommendationDto } from './dto/create-recommendation.dto'
 import { UpdateRecommendationDto } from './dto/update-recommendation.dto'
 import { RecommendationsService } from './recommendations.service'
 
-@Controller('recommendations')
+@Controller('')
 export class RecommendationsController {
   constructor(
     private readonly recommendationsService: RecommendationsService,
