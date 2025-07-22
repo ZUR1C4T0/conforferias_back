@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["strictUndefinedChecks"]
 }
 
 datasource db {
@@ -14,16 +15,13 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  email      String   @unique
-  password   String
-  name       String
-  role       UserRole @default(REPRESENTANTE)
-  positionId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  position Position @relation(fields: [positionId], references: [id])
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(REPRESENTANTE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   fairRepresentations FairRepresentative[]
   sessions            Session[]
@@ -46,16 +44,6 @@ model Session {
   user User @relation(fields: [userId], references: [id])
 
   @@index([userId, token])
-}
-
-model Position {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  users User[]
 }
 
 model Fair {
@@ -83,7 +71,6 @@ model Fair {
   evaluation       FairEvaluation[]
   fairAchievement  FairAchievement[]
   improvementAreas ImprovementArea[]
-  recommendations  FairRecommendation[]
 }
 
 model FairRepresentative {
@@ -104,7 +91,6 @@ model FairRepresentative {
   evaluations      FairEvaluation[]
   achievements     FairAchievement[]
   improvementAreas ImprovementArea[]
-  recommendations  FairRecommendation[]
 
   @@unique([fairId, userId])
 }
@@ -284,18 +270,6 @@ model FairAchievement {
 }
 
 model ImprovementArea {
-  id               String   @id @default(uuid())
-  fairId           String
-  representativeId String
-  content          String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  fair           Fair               @relation(fields: [fairId], references: [id])
-  representative FairRepresentative @relation(fields: [representativeId], references: [id])
-}
-
-model FairRecommendation {
   id               String   @id @default(uuid())
   fairId           String
   representativeId String

@@ -17,8 +17,6 @@ import { ImprovementAreasController } from './improvement-areas.controller'
 import { ImprovementAreasService } from './improvement-areas.service'
 import { PostFairActionsController } from './post-fair-actions.controller'
 import { PostFairActionsService } from './post-fair-actions.service'
-import { RecommendationsController } from './recommendations.controller'
-import { RecommendationsService } from './recommendations.service'
 import { RepresentativesController } from './representatives.controller'
 import { RepresentativesService } from './representatives.service'
 import { TrendsController } from './trends.controller'
@@ -38,7 +36,6 @@ import { TrendsService } from './trends.service'
     FairEvaluationsController,
     AchievementController,
     ImprovementAreasController,
-    RecommendationsController,
   ],
   providers: [
     FairsService,
@@ -52,7 +49,6 @@ import { TrendsService } from './trends.service'
     FairEvaluationsService,
     AchievementService,
     ImprovementAreasService,
-    RecommendationsService,
   ],
 })
 export class FairsModule {}

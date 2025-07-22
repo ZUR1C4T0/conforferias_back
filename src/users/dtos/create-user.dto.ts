@@ -2,17 +2,16 @@ import { User, UserRole } from '@prisma/client'
 import {
   IsEmail,
   IsEnum,
+  IsNotEmpty,
   IsString,
   IsStrongPassword,
-  IsUUID,
-  MinLength,
 } from 'class-validator'
 
 export class CreateUserDto
   implements Omit<User, 'id' | 'createdAt' | 'updatedAt'>
 {
   @IsString()
-  @MinLength(3)
+  @IsNotEmpty()
   readonly name: string
 
   @IsEmail()
@@ -29,7 +28,4 @@ export class CreateUserDto
 
   @IsEnum(UserRole)
   readonly role: UserRole
-
-  @IsUUID()
-  readonly positionId: string
 }

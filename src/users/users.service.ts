@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { UserRole } from '@prisma/client'
+import { Prisma, UserRole } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 import { PrismaService } from '../database/prisma.service'
 import { CreateUserDto } from './dtos/create-user.dto'
@@ -19,32 +19,17 @@ export class UsersService {
       where: { email: data.email },
       select: { id: true },
     })
-    if (existingUser) throw new ConflictException('Email already in use')
-
-    const position = await this.prisma.position.findUnique({
-      where: { id: data.positionId },
-      select: { id: true },
-    })
-    if (!position) throw new NotFoundException('Position not found')
-
+    if (existingUser) throw new ConflictException('Correo ya registrado')
     const hashedPassword = await bcrypt.hash(data.password, 10)
-
     return this.prisma.user.create({
       data: {
         email: data.email,
         password: hashedPassword,
         name: data.name,
         role: data.role || UserRole.REPRESENTANTE,
-        positionId: data.positionId,
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        position: { select: { id: true, name: true } },
-        createdAt: true,
-        updatedAt: true,
+      omit: {
+        password: true,
       },
     })
   }
@@ -64,32 +49,22 @@ export class UsersService {
   async findById(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
+      omit: {
+        password: true,
+      },
     })
-
-    if (!user) throw new NotFoundException('User not found')
+    if (!user) throw new NotFoundException()
     return user
   }
 
-  async findAll(filters: { role?: UserRole; positionId?: string }) {
-    const { role, positionId } = filters
+  async findAll(filters: { role?: UserRole }) {
+    const { role } = filters
     return await this.prisma.user.findMany({
       where: {
-        ...(role && { role }),
-        ...(positionId && { positionId }),
+        role: role || Prisma.skip,
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        position: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        createdAt: true,
-        updatedAt: true,
+      omit: {
+        password: true,
       },
       orderBy: { createdAt: 'desc' },
     })
@@ -98,21 +73,10 @@ export class UsersService {
   async findRepresentatives() {
     return await this.prisma.user.findMany({
       where: {
-        role: {
-          in: [UserRole.MERCADEO, UserRole.REPRESENTANTE],
-        },
+        role: UserRole.REPRESENTANTE,
       },
-      select: {
-        id: true,
-        name: true,
-        role: true,
-        email: true,
-        position: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
+      omit: {
+        password: true,
       },
       orderBy: { name: 'asc' },
     })
@@ -123,39 +87,21 @@ export class UsersService {
       where: { id },
       select: { id: true, email: true },
     })
-    if (!user) throw new NotFoundException('User not found')
-
+    if (!user) throw new NotFoundException()
     if (dto.email && dto.email !== user.email) {
       const existing = await this.prisma.user.findUnique({
         where: { email: dto.email },
         select: { id: true },
       })
-      if (existing) throw new ConflictException('Email already in use')
+      if (existing) throw new ConflictException('Correo ya registrado')
     }
-
-    if (dto.positionId) {
-      const position = await this.prisma.position.findUnique({
-        where: { id: dto.positionId },
-        select: { id: true },
-      })
-      if (!position) throw new NotFoundException('Position not found')
-    }
-
     return this.prisma.user.update({
       where: { id },
       data: {
         ...dto,
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        position: {
-          select: { id: true, name: true },
-        },
-        createdAt: true,
-        updatedAt: true,
+      omit: {
+        password: true,
       },
     })
   }
@@ -165,16 +111,12 @@ export class UsersService {
       where: { id },
       select: { id: true },
     })
-    if (!user) throw new NotFoundException('User not found')
-
-    const hashed = await bcrypt.hash(dto.newPassword, 10)
-
-    await this.prisma.user.update({
+    if (!user) throw new NotFoundException()
+    const hashed = await bcrypt.hash(dto.password, 10)
+    return await this.prisma.user.update({
       where: { id },
       data: { password: hashed },
-      select: { id: true },
+      omit: { password: true },
     })
-
-    return { message: 'Password updated successfully' }
   }
 }

@@ -1,7 +1,6 @@
-import { IsString, MinLength } from 'class-validator'
+import { PickType } from '@nestjs/mapped-types'
+import { CreateUserDto } from './create-user.dto'
 
-export class ResetPasswordDto {
-  @IsString()
-  @MinLength(8)
-  newPassword: string
-}
+export class ResetPasswordDto extends PickType(CreateUserDto, [
+  'password',
+] as const) {}

@@ -18,7 +18,7 @@ export class RepresentativesService {
     )
     const representatives = await this.prisma.user.findMany({
       where: { id: { in: uniqueReps.map((r) => r.userId) } },
-      select: { id: true, name: true, position: true },
+      select: { id: true, name: true },
     })
     const data = representatives.map((rep) => ({
       fairId,
@@ -43,7 +43,6 @@ export class RepresentativesService {
           select: {
             id: true,
             name: true,
-            position: true,
             email: true,
           },
         },

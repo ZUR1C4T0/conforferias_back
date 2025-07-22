@@ -26,11 +26,8 @@ export class UsersController {
 
   @Get()
   @Roles(UserRole.ADMIN)
-  findAll(
-    @Query('role') role?: UserRole,
-    @Query('positionId') positionId?: string,
-  ) {
-    return this.usersService.findAll({ role, positionId })
+  findAll(@Query('role') role?: UserRole) {
+    return this.usersService.findAll({ role })
   }
 
   @Get('representatives')

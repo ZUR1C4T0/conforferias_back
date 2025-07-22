@@ -6,14 +6,6 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🚀 Iniciando seed...')
 
-  // --- Cargo para el administrador ---
-  const position = await prisma.position.upsert({
-    where: { name: 'Programador Web' },
-    create: { name: 'Programador Web' },
-    update: { name: 'Programador Web' },
-    select: { id: true },
-  })
-
   // --- Crear el usuario administrador ---
   await prisma.user.create({
     data: {
@@ -21,7 +13,6 @@ async function main() {
       email: 'webmaster2@confortfresh.com',
       password: bcrypt.hashSync('admin123', 10),
       role: 'ADMIN',
-      positionId: position.id,
     },
   })
 
