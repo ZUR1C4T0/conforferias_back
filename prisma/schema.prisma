@@ -43,7 +43,7 @@ model Session {
 
   user User @relation(fields: [userId], references: [id])
 
-  @@index([userId, token])
+  @@index([userId])
 }
 
 model Fair {
@@ -63,14 +63,13 @@ model Fair {
   representatives  FairRepresentative[]
   contacts         Contact[]
   activities       ParallelActivity[]
-  evidences        FairEvidence[]
   competitors      FairCompetitor[]
   trends           Trend[]
   dafo             DafoAnalysis[]
-  postFairActions  PostFairAction[]
   evaluation       FairEvaluation[]
   fairAchievement  FairAchievement[]
   improvementAreas ImprovementArea[]
+  evidences        FairEvidence[]
 }
 
 model FairRepresentative {
@@ -83,14 +82,13 @@ model FairRepresentative {
   user User @relation(fields: [userId], references: [id])
 
   contacts         Contact[]
-  activities       ParallelActivity[]
-  postFairActions  PostFairAction[]
   evidences        FairEvidence[]
   dafo             DafoAnalysis[]
   competitors      FairCompetitor[]
   evaluations      FairEvaluation[]
   achievements     FairAchievement[]
   improvementAreas ImprovementArea[]
+  activities       ParallelActivity[]
 
   @@unique([fairId, userId])
 }
@@ -117,7 +115,7 @@ model Contact {
   profile   ContactProfile     @relation(fields: [profileId], references: [id])
   createdBy FairRepresentative @relation(fields: [createdById], references: [id])
 
-  tracking ContactTrackingNote[]
+  sale Sale?
 }
 
 enum Potential {
@@ -134,14 +132,19 @@ model ContactProfile {
   contacts Contact[]
 }
 
-model ContactTrackingNote {
-  id        String   @id @default(uuid())
-  contactId String
-  note      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Sale {
+  id        String @id @default(uuid())
+  contactId String @unique
+  amount    Amount
 
   contact Contact @relation(fields: [contactId], references: [id])
+}
+
+enum Amount {
+  BAJA // 1M - 7M
+  MEDIO // 7M - 20M
+  ALTA // 20M - 50M
+  SUPERIOR // +50M
 }
 
 model ParallelActivity {
@@ -219,27 +222,6 @@ model Trend {
   updatedAt DateTime @updatedAt
 
   fair Fair @relation(fields: [fairId], references: [id])
-}
-
-model PostFairAction {
-  id            String       @id @default(uuid())
-  fairId        String
-  action        String
-  responsibleId String
-  limitDate     DateTime
-  status        ActionStatus @default(PENDIENTE)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-
-  fair        Fair               @relation(fields: [fairId], references: [id])
-  responsible FairRepresentative @relation(fields: [responsibleId], references: [id])
-}
-
-enum ActionStatus {
-  PENDIENTE
-  EN_PROGRESO
-  COMPLETADA
-  CANCELADA
 }
 
 model FairEvaluation {
