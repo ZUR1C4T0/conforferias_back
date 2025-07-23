@@ -4,12 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { UserRole } from '@prisma/client'
-import { PrismaService } from '../database/prisma.service'
+import { PrismaService } from '@/database/prisma.service'
 import { CreateAchievementDto } from './dto/create-achievement.dto'
 import { UpdateAchievementDto } from './dto/update-achievement.dto'
 
 @Injectable()
-export class AchievementService {
+export class AchievementsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(fairId: string, userId: string, dto: CreateAchievementDto) {

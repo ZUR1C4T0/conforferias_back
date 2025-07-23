@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
-import { AchievementController } from './achievement.controller'
-import { AchievementService } from './achievement.service'
+import { AchievementsModule } from './achievements/achievements.module'
 import { ActivitiesController } from './activities.controller'
 import { ActivitiesService } from './activities.service'
 import { CompetitorsController } from './competitors.controller'
@@ -23,7 +22,7 @@ import { TrendsController } from './trends.controller'
 import { TrendsService } from './trends.service'
 
 @Module({
-  imports: [],
+  imports: [AchievementsModule],
   controllers: [
     FairsController,
     RepresentativesController,
@@ -34,7 +33,7 @@ import { TrendsService } from './trends.service'
     TrendsController,
     PostFairActionsController,
     FairEvaluationsController,
-    AchievementController,
+    // AchievementController,
     ImprovementAreasController,
   ],
   providers: [
@@ -47,7 +46,7 @@ import { TrendsService } from './trends.service'
     TrendsService,
     PostFairActionsService,
     FairEvaluationsService,
-    AchievementService,
+    // AchievementService,
     ImprovementAreasService,
   ],
 })
