@@ -79,12 +79,12 @@ model FairRepresentative {
   user User @relation(fields: [userId], references: [id])
 
   contacts         Contact[]
-  evidences        FairEvidence[]
   dafo             DafoAnalysis[]
   competitors      FairCompetitor[]
   evaluations      FairEvaluation[]
   achievements     FairAchievement[]
   improvementAreas ImprovementArea[]
+  evidences        FairEvidence[]
 
   @@unique([fairId, userId])
 }
@@ -159,17 +159,6 @@ enum ActivityType {
   CHARLA_TECNICA
   RUEDA_DE_NEGOCIOS
   OTRO
-}
-
-model FairEvidence {
-  id               String  @id @default(uuid())
-  fairId           String
-  representativeId String
-  url              String
-  description      String?
-
-  fair           Fair               @relation(fields: [fairId], references: [id])
-  representative FairRepresentative @relation(fields: [representativeId], references: [id])
 }
 
 model DafoAnalysis {
@@ -252,6 +241,17 @@ model ImprovementArea {
   content          String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  fair           Fair               @relation(fields: [fairId], references: [id])
+  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+}
+
+model FairEvidence {
+  id               String  @id @default(uuid())
+  fairId           String
+  representativeId String
+  url              String
+  description      String?
 
   fair           Fair               @relation(fields: [fairId], references: [id])
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
