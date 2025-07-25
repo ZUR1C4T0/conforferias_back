@@ -1,8 +1,8 @@
-import { Trend } from '@prisma/client'
+import { Tendency } from '@prisma/client'
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
-export class CreateTrendDto
-  implements Omit<Trend, 'id' | 'fairId' | 'createdAt' | 'updatedAt'>
+export class CreateTendencyDto
+  implements Omit<Tendency, 'id' | 'fairId' | 'createdAt' | 'updatedAt'>
 {
   @IsString()
   @IsNotEmpty()

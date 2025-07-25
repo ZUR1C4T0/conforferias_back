@@ -1,14 +1,18 @@
-import { ForbiddenException, Injectable } from '@nestjs/common'
-import { PrismaService } from '../database/prisma.service'
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
+import { PrismaService } from '@/database/prisma.service'
 import { EvaluateFairDto } from './dto/evaluate-fair.dto'
 
 @Injectable()
-export class FairEvaluationsService {
+export class EvaluationsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async upsert(fairId: string, userId: string, dto: EvaluateFairDto) {
-    const rep = await this.prisma.fairRepresentative.findFirst({
-      where: { fairId, userId },
+    const rep = await this.prisma.fairRepresentative.findUnique({
+      where: { fairId_userId: { fairId, userId } },
       select: { id: true },
     })
     if (!rep) throw new ForbiddenException()
@@ -19,26 +23,24 @@ export class FairEvaluationsService {
           representativeId: rep.id,
         },
       },
-      update: {
-        score: dto.score,
-        explanation: dto.explanation,
-      },
       create: {
         fairId,
         representativeId: rep.id,
-        score: dto.score,
-        explanation: dto.explanation,
+        ...dto,
+      },
+      update: {
+        ...dto,
       },
     })
   }
 
   async findOwnEvaluation(fairId: string, userId: string) {
-    const rep = await this.prisma.fairRepresentative.findFirst({
-      where: { fairId, userId },
+    const rep = await this.prisma.fairRepresentative.findUnique({
+      where: { fairId_userId: { fairId, userId } },
       select: { id: true },
     })
     if (!rep) throw new ForbiddenException()
-    return this.prisma.fairEvaluation.findUnique({
+    const evaluation = await this.prisma.fairEvaluation.findUnique({
       where: {
         fairId_representativeId: {
           fairId,
@@ -46,6 +48,8 @@ export class FairEvaluationsService {
         },
       },
     })
+    if (!evaluation) throw new NotFoundException('No existe una evaluación aún')
+    return evaluation
   }
 
   async findAllByFair(fairId: string) {
@@ -53,7 +57,13 @@ export class FairEvaluationsService {
       where: { fairId },
       include: {
         representative: {
-          select: { id: true, fullName: true },
+          select: {
+            id: true,
+            fullName: true,
+            user: {
+              omit: { password: true },
+            },
+          },
         },
       },
       orderBy: { createdAt: 'desc' },

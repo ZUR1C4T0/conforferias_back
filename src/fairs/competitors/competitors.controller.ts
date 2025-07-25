@@ -1,15 +1,15 @@
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
-import { Roles } from '../auth/decorators/roles.decorator'
+import { Roles } from '@/auth/decorators/roles.decorator'
 import { CompetitorsService } from './competitors.service'
 import { CreateCompetitorDto } from './dto/create-competitor.dto'
 
-@Controller('')
+@Controller('fairs/:fairId/competitors')
 export class CompetitorsController {
   constructor(private readonly competitorsService: CompetitorsService) {}
 
-  @Post('fairs/:fairId/competitors')
+  @Post()
   @Roles(UserRole.REPRESENTANTE)
   create(
     @Param('fairId') fairId: string,
@@ -20,25 +20,31 @@ export class CompetitorsController {
     return this.competitorsService.create(fairId, user.id, dto)
   }
 
-  @Get('fairs/:fairId/competitors')
-  findByFair(@Param('fairId') fairId: string, @Req() req: Request) {
+  @Get()
+  findAll(@Param('fairId') fairId: string, @Req() req: Request) {
     const user = req.user!
-    return this.competitorsService.findByFair(fairId, user)
+    return this.competitorsService.findAll(fairId, user)
   }
 
-  @Get('competitors/:id')
-  findOne(@Param('id') id: string) {
-    return this.competitorsService.findOne(id)
+  @Get(':competitorId')
+  findOne(
+    @Param('fairId') fairId: string,
+    @Param('competitorId') competitorId: string,
+    @Req() req: Request,
+  ) {
+    const user = req.user!
+    return this.competitorsService.findOne(fairId, competitorId, user)
   }
 
-  @Patch('competitors/:id')
+  @Patch(':comptitorId')
   @Roles(UserRole.REPRESENTANTE)
   update(
-    @Param('id') id: string,
+    @Param('fairId') fairId: string,
+    @Param('competitorId') competitorId: string,
     @Req() req: Request,
     @Body() dto: CreateCompetitorDto,
   ) {
     const user = req.user!
-    return this.competitorsService.update(id, user.id, dto)
+    return this.competitorsService.update(fairId, competitorId, user.id, dto)
   }
 }

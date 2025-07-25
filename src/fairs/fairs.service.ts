@@ -1,53 +1,47 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { UserRole } from '@prisma/client'
+import { StorageService } from '@/storage/storage.service'
 import { PrismaService } from '../database/prisma.service'
 import { CreateFairDto } from './dto/create-fair.dto'
 import { UpdateFairDto } from './dto/update-fair.dto'
 
 @Injectable()
 export class FairsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly storageService: StorageService,
+  ) {}
 
-  async create(data: CreateFairDto & { logoUrl: string }) {
+  async create(createFairDto: CreateFairDto) {
     return await this.prisma.fair.create({
-      data,
-      select: {
-        id: true,
-        name: true,
-        startDate: true,
-        endDate: true,
-        country: true,
-        city: true,
-        standNumber: true,
-        logoUrl: true,
-        areaM2: true,
-        totalInvestment: true,
+      data: {
+        ...createFairDto,
+        logoUrl: '',
       },
     })
   }
 
-  async findAll(user: Express.User) {
-    if (user.role === UserRole.ADMIN || user.role === UserRole.MERCADEO) {
-      return await this.prisma.fair.findMany({
-        select: {
-          id: true,
-          name: true,
-          logoUrl: true,
-        },
-        orderBy: { createdAt: 'desc' },
-      })
-    }
+  async upsertLogo(fairId: string, file: Express.Multer.File) {
+    const fair = await this.prisma.fair.findUnique({
+      where: { id: fairId },
+      select: { id: true },
+    })
+    if (!fair) throw new NotFoundException('Feria no encontrada')
+    const logoUrl = await this.storageService.uploadFile(file)
+    return this.prisma.fair.update({
+      where: { id: fair.id },
+      data: { logoUrl },
+      select: { logoUrl: true },
+    })
+  }
 
+  async findAll(user: Express.User) {
+    const isReprUser = user.role === UserRole.REPRESENTANTE
+    const whereCondition = isReprUser
+      ? { representatives: { some: { userId: user.id } } }
+      : {}
     return await this.prisma.fair.findMany({
-      where: {
-        representatives: {
-          some: { userId: user.id },
-        },
-      },
+      where: { ...whereCondition },
       select: {
         id: true,
         name: true,
@@ -66,65 +60,26 @@ export class FairsService {
         },
       },
     })
-
     if (!fairWithRepresentatives) throw new NotFoundException()
     const { representatives, ...fair } = fairWithRepresentatives
-
     if (
       user.role === UserRole.REPRESENTANTE &&
       !representatives.some((r) => r.userId === user.id)
     ) {
-      throw new ForbiddenException()
+      throw new NotFoundException('Feria no encontrada')
     }
-
     return fair
   }
 
-  update(id: string, updateFairDto: UpdateFairDto) {
-    const fair = this.prisma.fair.findUnique({
-      where: { id },
-      select: { id: true },
-    })
-    if (!fair) throw new NotFoundException()
-    return this.prisma.fair.update({
-      where: { id },
-      data: updateFairDto,
-      select: {
-        id: true,
-        name: true,
-        startDate: true,
-        endDate: true,
-        country: true,
-        city: true,
-        standNumber: true,
-        logoUrl: true,
-        areaM2: true,
-        totalInvestment: true,
-      },
-    })
-  }
-
-  async updateLogo(id: string, logoUrl: string) {
+  async update(id: string, updateFairDto: UpdateFairDto) {
     const fair = await this.prisma.fair.findUnique({
       where: { id },
       select: { id: true },
     })
-    if (!fair) throw new NotFoundException()
-    return await this.prisma.fair.update({
+    if (!fair) throw new NotFoundException('Feria no encontrada')
+    return this.prisma.fair.update({
       where: { id },
-      data: { logoUrl },
-      select: {
-        id: true,
-        name: true,
-        startDate: true,
-        endDate: true,
-        country: true,
-        city: true,
-        standNumber: true,
-        logoUrl: true,
-        areaM2: true,
-        totalInvestment: true,
-      },
+      data: updateFairDto,
     })
   }
 }

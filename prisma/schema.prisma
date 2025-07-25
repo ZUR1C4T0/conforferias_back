@@ -64,7 +64,7 @@ model Fair {
   contacts         Contact[]
   activities       ParallelActivity[]
   competitors      FairCompetitor[]
-  trends           Trend[]
+  tendencies       Tendency[]
   dafo             DafoAnalysis[]
   evaluation       FairEvaluation[]
   fairAchievement  FairAchievement[]
@@ -88,7 +88,6 @@ model FairRepresentative {
   evaluations      FairEvaluation[]
   achievements     FairAchievement[]
   improvementAreas ImprovementArea[]
-  activities       ParallelActivity[]
 
   @@unique([fairId, userId])
 }
@@ -148,17 +147,15 @@ enum Amount {
 }
 
 model ParallelActivity {
-  id               String       @id @default(uuid())
-  fairId           String
-  representativeId String
-  type             ActivityType
-  description      String
-  attendees        Int?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
+  id          String       @id @default(uuid())
+  fairId      String
+  type        ActivityType
+  description String
+  attendees   Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
-  fair           Fair               @relation(fields: [fairId], references: [id])
-  representative FairRepresentative @relation(fields: [representativeId], references: [id])
+  fair Fair @relation(fields: [fairId], references: [id])
 }
 
 enum ActivityType {
@@ -213,7 +210,7 @@ model FairCompetitor {
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
 }
 
-model Trend {
+model Tendency {
   id        String   @id @default(uuid())
   fairId    String
   title     String

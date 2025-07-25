@@ -1,17 +1,15 @@
 import { Body, Controller, Get, Param, Put, Req } from '@nestjs/common'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
-import { Roles } from '../auth/decorators/roles.decorator'
+import { Roles } from '@/auth/decorators/roles.decorator'
 import { EvaluateFairDto } from './dto/evaluate-fair.dto'
-import { FairEvaluationsService } from './fair-evaluations.service'
+import { EvaluationsService } from './evaluations.service'
 
-@Controller('fairs/:fairId')
-export class FairEvaluationsController {
-  constructor(
-    private readonly fairEvaluationsService: FairEvaluationsService,
-  ) {}
+@Controller('fairs/:fairId/evaluations')
+export class EvaluationsController {
+  constructor(private readonly evaluationsService: EvaluationsService) {}
 
-  @Put('evaluation')
+  @Put()
   @Roles(UserRole.REPRESENTANTE)
   upsert(
     @Param('fairId') fairId: string,
@@ -19,19 +17,19 @@ export class FairEvaluationsController {
     @Body() dto: EvaluateFairDto,
   ) {
     const user = req.user!
-    return this.fairEvaluationsService.upsert(fairId, user.id, dto)
+    return this.evaluationsService.upsert(fairId, user.id, dto)
   }
 
-  @Get('evaluation')
+  @Get('own')
   @Roles(UserRole.REPRESENTANTE)
   findOwnEvaluation(@Param('fairId') fairId: string, @Req() req: Request) {
     const user = req.user!
-    return this.fairEvaluationsService.findOwnEvaluation(fairId, user.id)
+    return this.evaluationsService.findOwnEvaluation(fairId, user.id)
   }
 
-  @Get('evaluations')
+  @Get()
   @Roles(UserRole.ADMIN, UserRole.MERCADEO)
   findAllByFair(@Param('fairId') fairId: string) {
-    return this.fairEvaluationsService.findAllByFair(fairId)
+    return this.evaluationsService.findAllByFair(fairId)
   }
 }

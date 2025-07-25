@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  Min,
   Validate,
 } from 'class-validator'
 import { EndDateValidator } from '../validators/end-date.validator'
@@ -18,11 +19,11 @@ export class CreateFairDto
   @IsNotEmpty()
   name: string
 
-  @Transform(({ value }) => new Date(value), { toClassOnly: true })
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   startDate: Date
 
-  @Transform(({ value }) => new Date(value), { toClassOnly: true })
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   @Validate(EndDateValidator)
   endDate: Date
@@ -39,14 +40,12 @@ export class CreateFairDto
   @IsNotEmpty()
   standNumber: string
 
-  @Transform(({ value }) => parseFloat(value), { toClassOnly: true })
   @IsNumber()
   @IsPositive()
   areaM2: number
 
   @IsOptional()
-  @Transform(({ value }) => parseInt(value), { toClassOnly: true })
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   totalInvestment: number | null
 }

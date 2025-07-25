@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   FileTypeValidator,
@@ -18,7 +17,6 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '../auth/decorators/roles.decorator'
-import { StorageService } from '../storage/storage.service'
 import { CreateFairDto } from './dto/create-fair.dto'
 import { UpdateFairDto } from './dto/update-fair.dto'
 import { FairsService } from './fairs.service'
@@ -37,21 +35,22 @@ const parseImagePipe = new ParseFilePipe({
 
 @Controller('fairs')
 export class FairsController {
-  constructor(
-    private readonly fairsService: FairsService,
-    private readonly storageService: StorageService,
-  ) {}
+  constructor(private readonly fairsService: FairsService) {}
 
   @Post()
   @Roles(UserRole.ADMIN, UserRole.MERCADEO)
+  create(@Body() createFairDto: CreateFairDto) {
+    return this.fairsService.create(createFairDto)
+  }
+
+  @Put(':fairId/logo')
+  @Roles(UserRole.ADMIN, UserRole.MERCADEO)
   @UseInterceptors(FileInterceptor('logo'))
-  async create(
-    @Body() createFairDto: CreateFairDto,
-    @UploadedFile(parseImagePipe) file: Express.Multer.File | undefined,
+  upsertLogo(
+    @Param('fairId') fairId: string,
+    @UploadedFile(parseImagePipe) file: Express.Multer.File,
   ) {
-    if (!file) throw new BadRequestException('File not found')
-    const logoUrl = await this.storageService.uploadFile(file)
-    return this.fairsService.create({ ...createFairDto, logoUrl })
+    return this.fairsService.upsertLogo(fairId, file)
   }
 
   @Get()
@@ -60,27 +59,18 @@ export class FairsController {
     return this.fairsService.findAll(user)
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Req() req: Request) {
+  @Get(':fairId')
+  findOne(@Param('fairId') fairId: string, @Req() req: Request) {
     const user = req.user!
-    return this.fairsService.findOne(id, user)
+    return this.fairsService.findOne(fairId, user)
   }
 
-  @Patch(':id')
+  @Patch(':fairId')
   @Roles(UserRole.ADMIN, UserRole.MERCADEO)
-  update(@Param('id') id: string, @Body() updateFairDto: UpdateFairDto) {
-    return this.fairsService.update(id, updateFairDto)
-  }
-
-  @Put(':id/logo')
-  @Roles(UserRole.ADMIN, UserRole.MERCADEO)
-  @UseInterceptors(FileInterceptor('logo'))
-  async updateLogo(
-    @Param('id') id: string,
-    @UploadedFile(parseImagePipe) file: Express.Multer.File | undefined,
+  update(
+    @Param('fairId') fairId: string,
+    @Body() updateFairDto: UpdateFairDto,
   ) {
-    if (!file) throw new BadRequestException('File not found')
-    const logoUrl = await this.storageService.uploadFile(file)
-    return this.fairsService.updateLogo(id, logoUrl)
+    return this.fairsService.update(fairId, updateFairDto)
   }
 }

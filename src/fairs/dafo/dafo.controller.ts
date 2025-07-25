@@ -1,16 +1,16 @@
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
-import { Roles } from '../auth/decorators/roles.decorator'
+import { Roles } from '@/auth/decorators/roles.decorator'
 import { DafoService } from './dafo.service'
 import { CreateDafoDto } from './dto/create-dafo.dto'
 import { UpdateDafoDto } from './dto/update-dafo.dto'
 
-@Controller('')
+@Controller('fairs/:fairId/dafo')
 export class DafoController {
   constructor(private readonly dafoService: DafoService) {}
 
-  @Post('fairs/:fairId/dafo')
+  @Post()
   @Roles(UserRole.REPRESENTANTE)
   create(
     @Param('fairId') fairId: string,
@@ -21,20 +21,20 @@ export class DafoController {
     return this.dafoService.create(fairId, user.id, createDafoDto)
   }
 
-  @Get('fairs/:fairId/dafo')
-  findAll(@Param('fairId') fairId: string, @Req() req: Request) {
-    const user = req.user!
-    return this.dafoService.findAll(fairId, user)
+  @Get()
+  findAll(@Param('fairId') fairId: string) {
+    return this.dafoService.findAll(fairId)
   }
 
-  @Patch('dafo/:id')
+  @Patch(':dafoId')
   @Roles(UserRole.REPRESENTANTE)
   update(
-    @Param('id') id: string,
+    @Param('fairId') fairId: string,
+    @Param('dafoId') dafoId: string,
     @Req() req: Request,
     @Body() updateDafoDto: UpdateDafoDto,
   ) {
     const user = req.user!
-    return this.dafoService.update(id, user.id, updateDafoDto)
+    return this.dafoService.update(fairId, dafoId, user.id, updateDafoDto)
   }
 }
