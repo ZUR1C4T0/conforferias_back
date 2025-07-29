@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger'
 import { User, UserRole } from '@prisma/client'
 import {
   IsEmail,
@@ -27,5 +28,6 @@ export class CreateUserDto
   readonly password: string
 
   @IsEnum(UserRole)
+  @ApiProperty({ enum: UserRole })
   readonly role: UserRole
 }

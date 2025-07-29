@@ -7,6 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common'
+import { ApiQuery } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { CreateUserDto } from './dtos/create-user.dto'
@@ -26,7 +27,8 @@ export class UsersController {
 
   @Get()
   @Roles(UserRole.ADMIN)
-  findAll(@Query('role') role?: UserRole) {
+  @ApiQuery({ name: 'role', required: false, type: String, enum: UserRole })
+  findAll(@Query('role') role: UserRole | undefined) {
     return this.usersService.findAll({ role })
   }
 
