@@ -12,6 +12,7 @@ import { AuthGuard } from '@nestjs/passport'
 import type { Request } from 'express'
 import { AuthService } from './auth.service'
 import { Public } from './decorators/public.decorator'
+import { LoginDto } from './dtos/login.dto'
 import { RefreshTokenDto } from './dtos/refresh-token.dto'
 
 @Controller('auth')
@@ -22,7 +23,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('local'))
-  async login(@Req() req: Request) {
+  async login(@Req() req: Request, @Body() _body: LoginDto) {
     const user = req.user!
     return await this.authService.login(user)
   }
