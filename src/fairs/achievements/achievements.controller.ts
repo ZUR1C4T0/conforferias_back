@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '@/auth/decorators/roles.decorator'
@@ -7,6 +8,7 @@ import { CreateAchievementDto } from './dto/create-achievement.dto'
 import { UpdateAchievementDto } from './dto/update-achievement.dto'
 
 @Controller('fairs/:fairId/achievements')
+@ApiBearerAuth()
 export class AchievementsController {
   constructor(private readonly achievementService: AchievementsService) {}
 

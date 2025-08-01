@@ -7,7 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common'
-import { ApiQuery } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { CreateUserDto } from './dtos/create-user.dto'
@@ -16,6 +16,7 @@ import { UpdateUserDto } from './dtos/update-user.dto'
 import { UsersService } from './users.service'
 
 @Controller('users')
+@ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

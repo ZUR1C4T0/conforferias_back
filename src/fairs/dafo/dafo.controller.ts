@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '@/auth/decorators/roles.decorator'
@@ -7,6 +8,7 @@ import { CreateDafoDto } from './dto/create-dafo.dto'
 import { UpdateDafoDto } from './dto/update-dafo.dto'
 
 @Controller('fairs/:fairId/dafo')
+@ApiBearerAuth()
 export class DafoController {
   constructor(private readonly dafoService: DafoService) {}
 

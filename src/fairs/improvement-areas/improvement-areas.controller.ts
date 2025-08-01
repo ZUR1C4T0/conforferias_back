@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '@/auth/decorators/roles.decorator'
@@ -6,6 +7,7 @@ import { CreateImprovementAreaDto } from './dto/create-improvement-area.dto'
 import { ImprovementAreasService } from './improvement-areas.service'
 
 @Controller('fairs/:fairId/improvements')
+@ApiBearerAuth()
 export class ImprovementAreasController {
   constructor(
     private readonly improvementAreasService: ImprovementAreasService,

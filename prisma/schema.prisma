@@ -101,7 +101,6 @@ model Contact {
   companyNit         String?
   country            String
   city               String?
-  interestProducts   String?
   estimatedPotential Potential
   createdById        String
   createdAt          DateTime  @default(now())

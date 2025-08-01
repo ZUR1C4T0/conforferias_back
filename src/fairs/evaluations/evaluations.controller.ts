@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Put, Req } from '@nestjs/common'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '@/auth/decorators/roles.decorator'
@@ -6,6 +7,7 @@ import { EvaluateFairDto } from './dto/evaluate-fair.dto'
 import { EvaluationsService } from './evaluations.service'
 
 @Controller('fairs/:fairId/evaluations')
+@ApiBearerAuth()
 export class EvaluationsController {
   constructor(private readonly evaluationsService: EvaluationsService) {}
 

@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '@/auth/decorators/roles.decorator'
@@ -7,6 +8,7 @@ import { CreateContactDto } from './dto/create-contact.dto'
 import { UpdateContactDto } from './dto/update-contact.dto'
 
 @Controller('fairs/:fairId/contacts')
+@ApiBearerAuth()
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 

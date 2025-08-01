@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Roles } from '@/auth/decorators/roles.decorator'
 import { ActivitiesService } from './activities.service'
@@ -6,6 +7,7 @@ import { CreateActivityDto } from './dto/create-activity.dto'
 import { UpdateActivityDto } from './dto/update-activity.dto'
 
 @Controller('fairs/:fairId/activities')
+@ApiBearerAuth()
 export class ActivitiesController {
   constructor(private readonly activitiesService: ActivitiesService) {}
 

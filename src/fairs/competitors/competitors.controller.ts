@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '@/auth/decorators/roles.decorator'
@@ -6,6 +7,7 @@ import { CompetitorsService } from './competitors.service'
 import { CreateCompetitorDto } from './dto/create-competitor.dto'
 
 @Controller('fairs/:fairId/competitors')
+@ApiBearerAuth()
 export class CompetitorsController {
   constructor(private readonly competitorsService: CompetitorsService) {}
 

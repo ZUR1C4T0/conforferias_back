@@ -1,4 +1,5 @@
-import { Contact, Potential } from '@prisma/client'
+import { ApiProperty } from '@nestjs/swagger'
+import { Amount, Contact, Potential } from '@prisma/client'
 import {
   IsEmail,
   IsEnum,
@@ -47,10 +48,12 @@ export class CreateContactDto
   @IsString()
   city: string
 
-  @IsOptional()
-  @IsString()
-  interestProducts: string | null
-
   @IsEnum(Potential)
+  @ApiProperty({ enum: Potential })
   estimatedPotential: Potential
+
+  @IsOptional()
+  @IsEnum(Amount)
+  @ApiProperty({ enum: Amount })
+  amount?: Amount | null
 }

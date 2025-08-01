@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import type { Request } from 'express'
 import { AuthService } from './auth.service'
 import { Public } from './decorators/public.decorator'
@@ -38,6 +39,7 @@ export class AuthController {
 
   @Delete('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
   async logout(@Req() req: Request) {
     const token = req.user?.token!
     if (token) await this.authService.logout(token)
@@ -46,6 +48,7 @@ export class AuthController {
 
   @Delete('logout/all')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
   async logoutAll(@Req() req: Request) {
     const user = req.user!
     await this.authService.logoutAll(user.id)

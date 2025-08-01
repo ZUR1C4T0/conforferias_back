@@ -20,11 +20,13 @@ export class ContactsService {
       select: { id: true },
     })
     if (!rep) throw new ForbiddenException()
+    const { amount, ...contactData } = contact
     return this.prisma.contact.create({
       data: {
-        ...contact,
+        ...contactData,
         fairId,
         createdById: rep.id,
+        sale: !amount ? Prisma.skip : { create: { amount } },
       },
     })
   }
@@ -91,9 +93,20 @@ export class ContactsService {
     if (!contact || contact.createdById !== rep.id) {
       throw new NotFoundException('Contacto no encontrado')
     }
+    const { amount, ...contactData } = dto
     return this.prisma.contact.update({
       where: { id: contactId },
-      data: dto,
+      data: {
+        ...contactData,
+        sale: !amount
+          ? Prisma.skip
+          : {
+              upsert: {
+                create: { amount },
+                update: { amount },
+              },
+            },
+      },
     })
   }
 }

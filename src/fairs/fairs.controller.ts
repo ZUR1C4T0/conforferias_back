@@ -14,6 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { ApiBearerAuth } from '@nestjs/swagger'
 import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '../auth/decorators/roles.decorator'
@@ -34,6 +35,7 @@ const parseImagePipe = new ParseFilePipe({
 })
 
 @Controller('fairs')
+@ApiBearerAuth()
 export class FairsController {
   constructor(private readonly fairsService: FairsService) {}
 
