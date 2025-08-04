@@ -4,6 +4,8 @@ import { ActivitiesModule } from './activities/activities.module'
 import { CompetitorsModule } from './competitors/competitors.module'
 import { ContactsModule } from './contacts/contacts.module'
 import { DafoModule } from './dafo/dafo.module'
+import { DashboardController } from './dashboard.controller'
+import { DashboardService } from './dashboard.service'
 import { EvaluationsModule } from './evaluations/evaluations.module'
 import { FairsController } from './fairs.controller'
 import { FairsService } from './fairs.service'
@@ -23,7 +25,11 @@ import { TendenciesModule } from './tendencies/tendencies.module'
     AchievementsModule,
     ImprovementAreasModule,
   ],
-  controllers: [FairsController, RepresentativesController],
-  providers: [FairsService, RepresentativesService],
+  controllers: [
+    FairsController,
+    RepresentativesController,
+    DashboardController,
+  ],
+  providers: [FairsService, RepresentativesService, DashboardService],
 })
 export class FairsModule {}
