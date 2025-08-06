@@ -20,16 +20,26 @@ export class DashboardService {
       where: { fairId },
       _count: true,
     })
-    // Alternativa para nacionales/internacionales usando raw query si es necesario
-    const [nationalityStats] = await this.prisma.$queryRaw<
-      [{ national: `${number}`; international: `${number}` }]
-    >`
-    SELECT
-      SUM(CASE WHEN LOWER(country) = 'colombia' THEN 1 ELSE 0 END) as national,
-      SUM(CASE WHEN LOWER(country) != 'colombia' THEN 1 ELSE 0 END) as international
-    FROM contact
-    WHERE fairId = ${fairId};
-  `
+    const [national, international] = await Promise.all([
+      this.prisma.contact.count({
+        where: {
+          fairId,
+          country: {
+            equals: 'Colombia',
+          },
+        },
+      }),
+      this.prisma.contact.count({
+        where: {
+          fairId,
+          country: {
+            not: {
+              equals: 'Colombia',
+            },
+          },
+        },
+      }),
+    ])
     // Procesamiento mínimo en JavaScript
     const topCountries = countryCounts.slice(0, 5).map((item) => ({
       country: item.country || 'Desconocido',
@@ -39,20 +49,24 @@ export class DashboardService {
       .slice(5)
       .reduce((sum, item) => sum + item._count.country, 0)
     // 3. Obtener los totales de ciudades colombianas
-    const citiesStats = await this.prisma.$queryRaw<
-      { city: string; count: `${number}` }[]
-    >`
-    SELECT
-      LOWER(TRIM(city)) as city,
-      COUNT(*) as count
-    FROM contact
-    WHERE
-      fairId = ${fairId} AND
-      country = 'Colombia' AND
-      city IS NOT NULL
-    GROUP BY city
-    ORDER BY count DESC;
-    `
+    const citiesGrouped = await this.prisma.contact.groupBy({
+      by: ['city'],
+      where: {
+        fairId,
+        country: 'Colombia',
+        city: {
+          not: null,
+        },
+      },
+      _count: {
+        _all: true,
+      },
+    })
+    citiesGrouped.sort((a, b) => b._count._all - a._count._all)
+    const citiesStats = citiesGrouped.map((item) => ({
+      city: item.city?.toLowerCase().trim() || '',
+      count: item._count._all,
+    }))
     // 4. Obtener los totales de los perfiles de visitantes
     const profilesStats = await this.prisma.contactProfile.findMany({
       select: {
@@ -70,18 +84,15 @@ export class DashboardService {
     return {
       visitors: {
         total: totals._count,
-        national: parseInt(nationalityStats.national),
-        international: parseInt(nationalityStats.international),
+        national,
+        international,
         countries: [
           ...topCountries,
           ...(othersCount > 0
             ? [{ country: 'Otros', count: othersCount }]
             : []),
         ],
-        cities: citiesStats.map((item) => ({
-          city: item.city,
-          count: parseInt(item.count),
-        })),
+        cities: citiesStats,
         profiles: profilesStats
           .filter((item) => item._count.contacts > 0)
           .map((item) => ({
