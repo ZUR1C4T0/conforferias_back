@@ -10,9 +10,7 @@ import metadata from './metadata'
 async function bootstrap() {
   // --- 🚀 NESTJS APPLICATION ---
   const app = await NestFactory.create(AppModule, {
-    cors: {
-      origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-    },
+    cors: true,
   })
 
   // --- 🛡️ SECURITY MIDDLEWARES ---
