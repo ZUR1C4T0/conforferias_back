@@ -87,6 +87,8 @@ model FairRepresentative {
   evidences        FairEvidence[]
 
   @@unique([fairId, userId])
+  @@index([fairId])
+  @@index([userId])
 }
 
 model Contact {
@@ -111,6 +113,10 @@ model Contact {
   createdBy FairRepresentative @relation(fields: [createdById], references: [id])
 
   sale Sale?
+
+  @@index([createdById])
+  @@index([fairId])
+  @@index([profileId])
 }
 
 enum Potential {
@@ -152,6 +158,8 @@ model ParallelActivity {
   updatedAt   DateTime     @updatedAt
 
   fair Fair @relation(fields: [fairId], references: [id])
+
+  @@index([fairId])
 }
 
 enum ActivityType {
@@ -169,6 +177,9 @@ model DafoAnalysis {
 
   fair           Fair               @relation(fields: [fairId], references: [id])
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
+
+  @@index([fairId])
+  @@index([representativeId])
 }
 
 enum DafoType {
@@ -193,6 +204,9 @@ model FairCompetitor {
 
   fair           Fair               @relation(fields: [fairId], references: [id])
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
+
+  @@index([fairId])
+  @@index([representativeId])
 }
 
 model Tendency {
@@ -204,6 +218,8 @@ model Tendency {
   updatedAt DateTime @updatedAt
 
   fair Fair @relation(fields: [fairId], references: [id])
+
+  @@index([fairId])
 }
 
 model FairEvaluation {
@@ -219,6 +235,7 @@ model FairEvaluation {
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
 
   @@unique([fairId, representativeId])
+  @@index([representativeId])
 }
 
 model FairAchievement {
@@ -231,6 +248,9 @@ model FairAchievement {
 
   fair           Fair               @relation(fields: [fairId], references: [id])
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
+
+  @@index([fairId])
+  @@index([representativeId])
 }
 
 model ImprovementArea {
@@ -243,6 +263,9 @@ model ImprovementArea {
 
   fair           Fair               @relation(fields: [fairId], references: [id])
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
+
+  @@index([fairId])
+  @@index([representativeId])
 }
 
 model FairEvidence {
@@ -254,4 +277,7 @@ model FairEvidence {
 
   fair           Fair               @relation(fields: [fairId], references: [id])
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
+
+  @@index([fairId])
+  @@index([representativeId])
 }

@@ -52,6 +52,8 @@ CREATE TABLE `FairRepresentative` (
     `userId` VARCHAR(191) NOT NULL,
     `fullName` VARCHAR(191) NOT NULL,
 
+    INDEX `FairRepresentative_fairId_idx`(`fairId`),
+    INDEX `FairRepresentative_userId_idx`(`userId`),
     UNIQUE INDEX `FairRepresentative_fairId_userId_key`(`fairId`, `userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -74,6 +76,9 @@ CREATE TABLE `Contact` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    INDEX `Contact_createdById_idx`(`createdById`),
+    INDEX `Contact_fairId_idx`(`fairId`),
+    INDEX `Contact_profileId_idx`(`profileId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -107,6 +112,7 @@ CREATE TABLE `ParallelActivity` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    INDEX `ParallelActivity_fairId_idx`(`fairId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -118,6 +124,8 @@ CREATE TABLE `DafoAnalysis` (
     `type` ENUM('DEBILIDAD', 'AMENAZA', 'FORTALEZA', 'OPORTUNIDAD') NOT NULL,
     `description` VARCHAR(191) NOT NULL,
 
+    INDEX `DafoAnalysis_fairId_idx`(`fairId`),
+    INDEX `DafoAnalysis_representativeId_idx`(`representativeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -135,6 +143,8 @@ CREATE TABLE `FairCompetitor` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    INDEX `FairCompetitor_fairId_idx`(`fairId`),
+    INDEX `FairCompetitor_representativeId_idx`(`representativeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -147,6 +157,7 @@ CREATE TABLE `Tendency` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    INDEX `Tendency_fairId_idx`(`fairId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -160,6 +171,7 @@ CREATE TABLE `FairEvaluation` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    INDEX `FairEvaluation_representativeId_idx`(`representativeId`),
     UNIQUE INDEX `FairEvaluation_fairId_representativeId_key`(`fairId`, `representativeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -173,6 +185,8 @@ CREATE TABLE `FairAchievement` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    INDEX `FairAchievement_fairId_idx`(`fairId`),
+    INDEX `FairAchievement_representativeId_idx`(`representativeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -185,6 +199,8 @@ CREATE TABLE `ImprovementArea` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    INDEX `ImprovementArea_fairId_idx`(`fairId`),
+    INDEX `ImprovementArea_representativeId_idx`(`representativeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -196,6 +212,8 @@ CREATE TABLE `FairEvidence` (
     `url` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NULL,
 
+    INDEX `FairEvidence_fairId_idx`(`fairId`),
+    INDEX `FairEvidence_representativeId_idx`(`representativeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -261,3 +279,4 @@ ALTER TABLE `FairEvidence` ADD CONSTRAINT `FairEvidence_fairId_fkey` FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE `FairEvidence` ADD CONSTRAINT `FairEvidence_representativeId_fkey` FOREIGN KEY (`representativeId`) REFERENCES `FairRepresentative`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
