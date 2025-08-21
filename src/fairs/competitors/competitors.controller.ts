@@ -38,7 +38,7 @@ export class CompetitorsController {
     return this.competitorsService.findOne(fairId, competitorId, user)
   }
 
-  @Patch(':comptitorId')
+  @Patch(':competitorId')
   @Roles(UserRole.REPRESENTANTE)
   update(
     @Param('fairId') fairId: string,
