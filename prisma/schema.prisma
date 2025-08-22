@@ -53,7 +53,7 @@ model Fair {
   endDate         DateTime
   country         String
   city            String?
-  logoUrl         String
+  logoUrl         String   @db.VarChar(255)
   standNumber     String
   areaM2          Float
   totalInvestment Int?
@@ -135,7 +135,7 @@ enum Potential {
 model ContactProfile {
   id          String  @id @default(uuid())
   name        String  @unique
-  description String?
+  description String? @db.Text
 
   contacts Contact[]
 
@@ -163,7 +163,7 @@ model ParallelActivity {
   id          String       @id @default(uuid())
   fairId      String
   type        ActivityType
-  description String
+  description String       @db.Text
   attendees   Int?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -185,7 +185,7 @@ model DafoAnalysis {
   fairId           String
   representativeId String
   type             DafoType
-  description      String
+  description      String   @db.Text
 
   fair           Fair               @relation(fields: [fairId], references: [id])
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
@@ -209,9 +209,9 @@ model FairCompetitor {
   company          String
   country          String
   city             String?
-  featuredProducts String
-  strengths        String
-  weaknesses       String
+  featuredProducts String   @db.Text
+  strengths        String   @db.Text
+  weaknesses       String   @db.Text
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
@@ -227,7 +227,7 @@ model Tendency {
   id        String   @id @default(uuid())
   fairId    String
   title     String
-  details   String?
+  details   String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -242,7 +242,7 @@ model FairEvaluation {
   fairId           String
   representativeId String
   score            Int
-  explanation      String
+  explanation      String   @db.Text
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
@@ -258,7 +258,7 @@ model FairAchievement {
   id               String   @id @default(uuid())
   fairId           String
   representativeId String
-  content          String
+  content          String   @db.Text
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
@@ -274,7 +274,7 @@ model ImprovementArea {
   id               String   @id @default(uuid())
   fairId           String
   representativeId String
-  content          String
+  content          String   @db.Text
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
@@ -290,8 +290,8 @@ model FairEvidence {
   id               String  @id @default(uuid())
   fairId           String
   representativeId String
-  url              String
-  description      String?
+  url              String  @db.VarChar(255)
+  description      String? @db.Text
 
   fair           Fair               @relation(fields: [fairId], references: [id])
   representative FairRepresentative @relation(fields: [representativeId], references: [id])
