@@ -22,6 +22,8 @@ model User {
 
   fairRepresentations FairRepresentative[]
   sessions            Session[]
+
+  @@map("User")
 }
 
 enum UserRole {
@@ -41,6 +43,7 @@ model Session {
   user User @relation(fields: [userId], references: [id])
 
   @@index([userId])
+  @@map("Session")
 }
 
 model Fair {
@@ -67,6 +70,8 @@ model Fair {
   fairAchievement  FairAchievement[]
   improvementAreas ImprovementArea[]
   evidences        FairEvidence[]
+
+  @@map("Fair")
 }
 
 model FairRepresentative {
@@ -89,6 +94,7 @@ model FairRepresentative {
   @@unique([fairId, userId])
   @@index([fairId])
   @@index([userId])
+  @@map("FairRepresentative")
 }
 
 model Contact {
@@ -117,6 +123,7 @@ model Contact {
   @@index([createdById])
   @@index([fairId])
   @@index([profileId])
+  @@map("Contact")
 }
 
 enum Potential {
@@ -131,6 +138,8 @@ model ContactProfile {
   description String?
 
   contacts Contact[]
+
+  @@map("ContactProfile")
 }
 
 model Sale {
@@ -139,6 +148,8 @@ model Sale {
   amount    Amount
 
   contact Contact @relation(fields: [contactId], references: [id])
+
+  @@map("Sale")
 }
 
 enum Amount {
@@ -160,6 +171,7 @@ model ParallelActivity {
   fair Fair @relation(fields: [fairId], references: [id])
 
   @@index([fairId])
+  @@map("ParallelActivity")
 }
 
 enum ActivityType {
@@ -180,6 +192,7 @@ model DafoAnalysis {
 
   @@index([fairId])
   @@index([representativeId])
+  @@map("DafoAnalysis")
 }
 
 enum DafoType {
@@ -207,6 +220,7 @@ model FairCompetitor {
 
   @@index([fairId])
   @@index([representativeId])
+  @@map("FairCompetitor")
 }
 
 model Tendency {
@@ -220,6 +234,7 @@ model Tendency {
   fair Fair @relation(fields: [fairId], references: [id])
 
   @@index([fairId])
+  @@map("Tendency")
 }
 
 model FairEvaluation {
@@ -236,6 +251,7 @@ model FairEvaluation {
 
   @@unique([fairId, representativeId])
   @@index([representativeId])
+  @@map("FairEvaluation")
 }
 
 model FairAchievement {
@@ -251,6 +267,7 @@ model FairAchievement {
 
   @@index([fairId])
   @@index([representativeId])
+  @@map("FairAchievement")
 }
 
 model ImprovementArea {
@@ -266,6 +283,7 @@ model ImprovementArea {
 
   @@index([fairId])
   @@index([representativeId])
+  @@map("ImprovementArea")
 }
 
 model FairEvidence {
@@ -280,4 +298,5 @@ model FairEvidence {
 
   @@index([fairId])
   @@index([representativeId])
+  @@map("FairEvidence")
 }
