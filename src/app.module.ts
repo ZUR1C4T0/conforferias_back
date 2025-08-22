@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { ScheduleModule } from '@nestjs/schedule'
 import { AuthModule } from './auth/auth.module'
 import { DatabaseModule } from './database/database.module'
 import { FairsModule } from './fairs/fairs.module'
@@ -11,6 +12,7 @@ import { UsersModule } from './users/users.module'
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     AuthModule,
+    ScheduleModule.forRoot(),
     UsersModule,
     FairsModule,
     StorageModule,
