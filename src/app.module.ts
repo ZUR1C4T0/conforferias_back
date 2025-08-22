@@ -4,6 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { AuthModule } from './auth/auth.module'
 import { DatabaseModule } from './database/database.module'
 import { FairsModule } from './fairs/fairs.module'
+import { KeepAliveController } from './keep-alive.controller'
 import { StorageModule } from './storage/storage.module'
 import { UsersModule } from './users/users.module'
 
@@ -17,7 +18,7 @@ import { UsersModule } from './users/users.module'
     FairsModule,
     StorageModule,
   ],
-  controllers: [],
+  controllers: [KeepAliveController],
   providers: [],
 })
 export class AppModule {}

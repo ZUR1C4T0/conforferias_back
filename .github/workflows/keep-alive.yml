@@ -1,0 +1,15 @@
+name: Keep Alive
+on:
+  schedule:
+    # Cada 10 minutos, 8AM-5PM Colombia, solo lunes a viernes
+    - cron: '*/10 13-22 * * 1-5'
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping app
+        run: |
+          curl -f https://conforferias-back.onrender.com/health || echo "Health check failed"
+      - name: Log execution
+        run: echo "Keep Alive executed at $(TZ='America/Bogota' date '+%Y-%m-%d %H:%M:%S %Z')"
