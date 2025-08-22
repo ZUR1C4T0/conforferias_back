@@ -13,15 +13,15 @@ export class AchievementsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(fairId: string, userId: string, dto: CreateAchievementDto) {
-    const _rep = await this.prisma.fairRepresentative.findFirst({
-      where: { fairId, userId },
+    const rep = await this.prisma.fairRepresentative.findUnique({
+      where: { fairId_userId: { fairId, userId } },
       select: { id: true },
     })
-    if (!_rep) throw new ForbiddenException()
+    if (!rep) throw new ForbiddenException()
     return await this.prisma.fairAchievement.create({
       data: {
         fairId,
-        representativeId: _rep.id,
+        representativeId: rep.id,
         content: dto.content,
       },
     })
@@ -29,8 +29,8 @@ export class AchievementsService {
 
   async findByFair(fairId: string, user: Express.User) {
     if (user.role === UserRole.REPRESENTANTE) {
-      const rep = await this.prisma.fairRepresentative.findFirst({
-        where: { fairId, userId: user.id },
+      const rep = await this.prisma.fairRepresentative.findUnique({
+        where: { fairId_userId: { fairId, userId: user.id } },
         select: { id: true },
       })
       if (!rep) throw new ForbiddenException()
@@ -53,9 +53,14 @@ export class AchievementsService {
     })
   }
 
-  async update(id: string, userId: string, dto: UpdateAchievementDto) {
-    const rep = await this.prisma.fairRepresentative.findFirst({
-      where: { userId },
+  async update(
+    fairId: string,
+    id: string,
+    userId: string,
+    dto: UpdateAchievementDto,
+  ) {
+    const rep = await this.prisma.fairRepresentative.findUnique({
+      where: { fairId_userId: { fairId, userId } },
       select: { id: true },
     })
     if (!rep) throw new ForbiddenException()

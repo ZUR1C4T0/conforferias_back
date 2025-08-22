@@ -32,11 +32,12 @@ export class AchievementsController {
   @Patch(':achievementId')
   @Roles(UserRole.REPRESENTANTE)
   update(
-    @Param('achievementId') id: string,
+    @Param('fairId') fairId: string,
+    @Param('achievementId') achievementId: string,
     @Req() req: Request,
     @Body() dto: UpdateAchievementDto,
   ) {
     const user = req.user!
-    return this.achievementService.update(id, user.id, dto)
+    return this.achievementService.update(fairId, achievementId, user.id, dto)
   }
 }
