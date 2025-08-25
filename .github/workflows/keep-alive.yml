@@ -1,8 +1,8 @@
 name: Keep Alive
 on:
   schedule:
-    # Cada 10 minutos, 8AM-5PM Colombia, solo lunes a viernes
-    - cron: '*/10 13-22 * * 1-5'
+    # Cada 5 minutos, 8AM-5PM Colombia, solo lunes a viernes
+    - cron: '*/5 13-22 * * 1-5'
 
 jobs:
   ping:
