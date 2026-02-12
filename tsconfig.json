@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@generated/prisma/*": ["./src/generated/prisma/*"]
     }
   }
 }

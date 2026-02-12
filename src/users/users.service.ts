@@ -1,9 +1,9 @@
+import { Prisma, UserRole } from '@generated/prisma/client'
 import {
   ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { Prisma, UserRole } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 import { PrismaService } from '../database/prisma.service'
 import { CreateUserDto } from './dtos/create-user.dto'

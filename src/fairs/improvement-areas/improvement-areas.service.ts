@@ -1,9 +1,9 @@
+import { UserRole } from '@generated/prisma/client'
 import {
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { UserRole } from '@prisma/client'
 import { PrismaService } from '@/database/prisma.service'
 import { CreateImprovementAreaDto } from './dto/create-improvement-area.dto'
 import { UpdateImprovementAreaDto } from './dto/update-improvement-area.dto'

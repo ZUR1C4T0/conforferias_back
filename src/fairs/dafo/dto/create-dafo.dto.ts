@@ -1,4 +1,4 @@
-import { DafoType } from '@prisma/client'
+import { DafoType } from '@generated/prisma/client'
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateDafoDto {

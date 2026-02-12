@@ -1,4 +1,4 @@
-import { ImprovementArea } from '@prisma/client'
+import { ImprovementArea } from '@generated/prisma/client'
 import { IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateImprovementAreaDto

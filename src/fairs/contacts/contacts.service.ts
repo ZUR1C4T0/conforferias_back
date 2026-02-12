@@ -1,9 +1,9 @@
+import { Prisma, UserRole } from '@generated/prisma/client'
 import {
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { Prisma, UserRole } from '@prisma/client'
 import { PrismaService } from '@/database/prisma.service'
 import { CreateContactDto } from './dto/create-contact.dto'
 import { UpdateContactDto } from './dto/update-contact.dto'

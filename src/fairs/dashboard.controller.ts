@@ -1,6 +1,6 @@
+import { UserRole } from '@generated/prisma/client'
 import { Controller, Get, Param } from '@nestjs/common'
 import { ApiBearerAuth } from '@nestjs/swagger'
-import { UserRole } from '@prisma/client'
 import { Roles } from '@/auth/decorators/roles.decorator'
 import { DashboardService } from './dashboard.service'
 

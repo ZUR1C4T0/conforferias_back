@@ -1,4 +1,4 @@
-import { Tendency } from '@prisma/client'
+import { Tendency } from '@generated/prisma/client'
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
 export class CreateTendencyDto

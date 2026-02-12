@@ -1,5 +1,5 @@
+import { Amount, Contact, Potential } from '@generated/prisma/client'
 import { ApiProperty } from '@nestjs/swagger'
-import { Amount, Contact, Potential } from '@prisma/client'
 import {
   IsEmail,
   IsEnum,

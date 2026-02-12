@@ -1,4 +1,4 @@
-import { FairAchievement } from '@prisma/client'
+import { FairAchievement } from '@generated/prisma/client'
 import { IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateAchievementDto implements Pick<FairAchievement, 'content'> {

@@ -1,6 +1,6 @@
+import { UserRole } from '@generated/prisma/client'
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common'
 import { ApiBearerAuth } from '@nestjs/swagger'
-import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '@/auth/decorators/roles.decorator'
 import { ContactsService } from './contacts.service'

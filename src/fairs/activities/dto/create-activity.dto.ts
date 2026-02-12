@@ -1,4 +1,4 @@
-import { ActivityType, ParallelActivity } from '@prisma/client'
+import { ActivityType, ParallelActivity } from '@generated/prisma/client'
 import {
   IsEnum,
   IsNotEmpty,

@@ -1,4 +1,4 @@
-import { FairRepresentative } from '@prisma/client'
+import { FairRepresentative } from '@generated/prisma/client'
 import { Type } from 'class-transformer'
 import { IsArray, IsUUID, ValidateNested } from 'class-validator'
 

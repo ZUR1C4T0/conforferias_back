@@ -1,4 +1,4 @@
-import { Fair } from '@prisma/client'
+import { Fair } from '@generated/prisma/client'
 import { Transform } from 'class-transformer'
 import {
   IsDate,

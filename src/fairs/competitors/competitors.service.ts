@@ -1,9 +1,9 @@
+import { UserRole } from '@generated/prisma/client'
 import {
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { UserRole } from '@prisma/client'
 import { PrismaService } from '@/database/prisma.service'
 import { CreateCompetitorDto } from './dto/create-competitor.dto'
 import { UpdateCompetitorDto } from './dto/update-competitor.dto'

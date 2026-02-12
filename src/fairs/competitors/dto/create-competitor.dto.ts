@@ -1,4 +1,4 @@
-import { FairCompetitor } from '@prisma/client'
+import { FairCompetitor } from '@generated/prisma/client'
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
 export class CreateCompetitorDto

@@ -1,6 +1,6 @@
+import { UserRole } from '@generated/prisma/client'
 import { Body, Controller, Get, Param, Put } from '@nestjs/common'
 import { ApiBearerAuth } from '@nestjs/swagger'
-import { UserRole } from '@prisma/client'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { AssignRepresentativesDto } from './dto/assign-representatives.dto'
 import { RepresentativesService } from './representatives.service'

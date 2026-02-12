@@ -1,3 +1,4 @@
+import { UserRole } from '@generated/prisma/client'
 import {
   Body,
   Controller,
@@ -8,7 +9,6 @@ import {
   Query,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger'
-import { UserRole } from '@prisma/client'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { CreateUserDto } from './dtos/create-user.dto'
 import { ResetPasswordDto } from './dtos/reset-password.dto'

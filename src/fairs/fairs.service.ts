@@ -1,5 +1,5 @@
+import { UserRole } from '@generated/prisma/client'
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { UserRole } from '@prisma/client'
 import { StorageService } from '@/storage/storage.service'
 import { PrismaService } from '../database/prisma.service'
 import { CreateFairDto } from './dto/create-fair.dto'

@@ -1,3 +1,4 @@
+import { UserRole } from '@generated/prisma/client'
 import {
   Body,
   Controller,
@@ -15,7 +16,6 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth } from '@nestjs/swagger'
-import { UserRole } from '@prisma/client'
 import { Request } from 'express'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { CreateFairDto } from './dto/create-fair.dto'

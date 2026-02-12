@@ -1,4 +1,4 @@
-import { FairEvaluation } from '@prisma/client'
+import { FairEvaluation } from '@generated/prisma/client'
 import { IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator'
 
 export class EvaluateFairDto
