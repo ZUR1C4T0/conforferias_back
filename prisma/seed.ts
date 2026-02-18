@@ -2,7 +2,16 @@ import { PrismaClient } from '@generated/prisma/client'
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 import * as bcrypt from 'bcrypt'
 
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL!)
+const url = new URL(process.env.DATABASE_URL!)
+const adapter = new PrismaMariaDb({
+  host: url.hostname,
+  port: Number(url.port),
+  user: url.username,
+  password: url.password,
+  database: url.pathname.slice(1),
+  connectTimeout: 5000,
+  allowPublicKeyRetrieval: true,
+})
 const prisma = new PrismaClient({ adapter })
 
 async function main() {
