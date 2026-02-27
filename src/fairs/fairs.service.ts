@@ -46,6 +46,8 @@ export class FairsService {
         id: true,
         name: true,
         logoUrl: true,
+        startDate: true,
+        endDate: true,
       },
       orderBy: { createdAt: 'desc' },
     })
