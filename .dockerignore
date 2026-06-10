@@ -1,5 +1,65 @@
-node_modules
-dist
+# ==========================================
+# 1. Dependencias y Compilación Local
+# ==========================================
+node_modules/
+dist/
+tsconfig.tsbuildinfo
+
+# ==========================================
+# 2. Prisma 7
+# ==========================================
+src/generated/prisma/
+.prisma/
+
+# ==========================================
+# 3. Secretos y Entornos
+# ==========================================
 .env
+.env.*
+!.env.example
+
+# ==========================================
+# 4. Logs y Temporales
+# ==========================================
 *.log
-.git
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.pnpm-store/
+
+# ==========================================
+# 5. Git e IDEs (Editores de Código)
+# ==========================================
+.git/
+.gitignore
+.github/
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# ==========================================
+# 6. Basura del Sistema Operativo
+# ==========================================
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# 7. Testing
+# ==========================================
+test/
+coverage/
+*.spec.ts
+*.test.ts
+
+# ==========================================
+# 8. Archivos de Docker
+# ==========================================
+Dockerfile
+docker-compose*.yml
+.dockerignore

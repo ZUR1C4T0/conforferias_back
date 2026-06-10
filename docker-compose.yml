@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    container_name: conforferias_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: prisma
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+      interval: 5s
+      start_period: 30s
+
+  migration:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: migration
+    container_name: conforferias_migration
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: mysql://root:root@db:3306/prisma
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    container_name: conforferias_api
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: mysql://root:root@db:3306/prisma
+    ports:
+      - "4000:4000"
+    depends_on:
+      migration:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
