@@ -6,7 +6,7 @@ services:
     container_name: conforferias_db
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: prisma
+      MYSQL_DATABASE: conforferias
     ports:
       - "3306:3306"
     volumes:
@@ -27,7 +27,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: mysql://root:root@db:3306/prisma
+      DATABASE_URL: mysql://root:root@db:3306/conforferias
     depends_on:
       db:
         condition: service_healthy
