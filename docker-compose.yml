@@ -42,7 +42,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: mysql://root:root@db:3306/prisma
+      DATABASE_URL: mysql://root:root@db:3306/conforferias
     ports:
       - "4000:4000"
     depends_on:
