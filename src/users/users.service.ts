@@ -20,7 +20,7 @@ export class UsersService {
       select: { id: true },
     })
     if (existingUser) throw new ConflictException('Correo ya registrado')
-    const hashedPassword = await bcrypt.hash(data.password, 10)
+    const hashedPassword = await bcrypt.hash(data.password, 12)
     return this.prisma.user.create({
       data: {
         email: data.email,
@@ -112,7 +112,7 @@ export class UsersService {
       select: { id: true },
     })
     if (!user) throw new NotFoundException()
-    const hashed = await bcrypt.hash(dto.password, 10)
+    const hashed = await bcrypt.hash(dto.password, 12)
     return await this.prisma.user.update({
       where: { id },
       data: { password: hashed },
