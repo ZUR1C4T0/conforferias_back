@@ -5,7 +5,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsString,
-  IsStrongPassword,
+  MinLength,
 } from 'class-validator'
 
 export class CreateUserDto
@@ -19,9 +19,7 @@ export class CreateUserDto
   readonly email: string
 
   @IsString()
-  @IsStrongPassword({
-    minLength: 6,
-  })
+  @MinLength(6)
   readonly password: string
 
   @IsEnum(UserRole)
