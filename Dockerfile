@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
 FROM base AS builder
 ENV NODE_ENV=production \
   DATABASE_URL=mysql://root:root@localhost:3306/conforferias
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
   pnpm install --frozen-lockfile
 COPY . .
@@ -18,7 +18,7 @@ RUN pnpm run build
 
 
 FROM base AS prod_deps
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
   pnpm install --frozen-lockfile --prod
 
