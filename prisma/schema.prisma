@@ -69,7 +69,6 @@ model Fair {
   evaluation       FairEvaluation[]
   fairAchievement  FairAchievement[]
   improvementAreas ImprovementArea[]
-  evidences        FairEvidence[]
 
   @@map("Fair")
 }
@@ -89,7 +88,6 @@ model FairRepresentative {
   evaluations      FairEvaluation[]
   achievements     FairAchievement[]
   improvementAreas ImprovementArea[]
-  evidences        FairEvidence[]
 
   @@unique([fairId, userId])
   @@index([fairId])
@@ -263,19 +261,4 @@ model ImprovementArea {
   @@index([fairId])
   @@index([representativeId])
   @@map("ImprovementArea")
-}
-
-model FairEvidence {
-  id               String  @id @default(uuid())
-  fairId           String
-  representativeId String
-  url              String  @db.VarChar(255)
-  description      String? @db.Text
-
-  fair           Fair               @relation(fields: [fairId], references: [id])
-  representative FairRepresentative @relation(fields: [representativeId], references: [id])
-
-  @@index([fairId])
-  @@index([representativeId])
-  @@map("FairEvidence")
 }
