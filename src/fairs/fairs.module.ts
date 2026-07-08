@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
 import { AchievementsModule } from './achievements/achievements.module'
-import { ActivitiesModule } from './activities/activities.module'
 import { CompetitorsModule } from './competitors/competitors.module'
 import { ContactsModule } from './contacts/contacts.module'
 import { DafoModule } from './dafo/dafo.module'
@@ -17,7 +16,6 @@ import { TendenciesModule } from './tendencies/tendencies.module'
 @Module({
   imports: [
     ContactsModule,
-    ActivitiesModule,
     DafoModule,
     CompetitorsModule,
     TendenciesModule,

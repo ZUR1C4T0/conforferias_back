@@ -63,7 +63,6 @@ model Fair {
 
   representatives  FairRepresentative[]
   contacts         Contact[]
-  activities       ParallelActivity[]
   competitors      FairCompetitor[]
   tendencies       Tendency[]
   dafo             DafoAnalysis[]
@@ -158,27 +157,6 @@ enum Amount {
   MEDIO // 7M - 20M
   ALTA // 20M - 50M
   SUPERIOR // +50M
-}
-
-model ParallelActivity {
-  id          String       @id @default(uuid())
-  fairId      String
-  type        ActivityType
-  description String       @db.Text
-  attendees   Int?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-
-  fair Fair @relation(fields: [fairId], references: [id])
-
-  @@index([fairId])
-  @@map("ParallelActivity")
-}
-
-enum ActivityType {
-  CHARLA_TECNICA
-  RUEDA_DE_NEGOCIOS
-  OTRO
 }
 
 model DafoAnalysis {
