@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import multer from 'multer'
 import sharp from 'sharp'
 import { R2Service } from './r2.service'
 

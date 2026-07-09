@@ -6,7 +6,15 @@
     "useIgnoreFile": false
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/build",
+      "!**/generated/prisma",
+      "!src/metadata.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -24,7 +32,6 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": false,
       "complexity": {
         "noAdjacentSpacesInRegex": "error",
         "noExtraBooleanCast": "error",
@@ -61,9 +68,11 @@
       "style": {
         "noCommonJs": "error",
         "noNamespace": "error",
+        "noNonNullAssertion": "off",
         "useArrayLiterals": "error",
         "useAsConstAssertion": "error",
-        "useBlockStatements": "off"
+        "useBlockStatements": "off",
+        "useImportType": "off"
       },
       "suspicious": {
         "noAsyncPromiseExecutor": "error",
@@ -87,6 +96,7 @@
         "noIrregularWhitespace": "error",
         "noMisleadingCharacterClass": "error",
         "noMisleadingInstantiator": "error",
+        "noNonNullAssertedOptionalChain": "off",
         "noPrototypeBuiltins": "error",
         "noRedeclare": "error",
         "noShadowRestrictedNames": "error",

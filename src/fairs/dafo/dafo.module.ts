@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { DafoController } from './dafo.controller';
-import { DafoService } from './dafo.service';
+import { DafoController } from './dafo.controller'
+import { DafoService } from './dafo.service'
 
 @Module({
   imports: [],

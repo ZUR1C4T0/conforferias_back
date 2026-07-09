@@ -1,4 +1,3 @@
-import { UserRole } from '@generated/prisma/client'
 import {
   ForbiddenException,
   Injectable,
