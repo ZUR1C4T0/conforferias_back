@@ -54,6 +54,7 @@ export class ContactsService {
         otherProfile: true,
         estimatedPotential: true,
         createdBy: { select: { id: true, fullName: true } },
+        sale: { select: { id: true, amount: true } },
       },
       orderBy: { createdAt: 'desc' },
     })
